@@ -19,7 +19,7 @@ public class EpidemicRouter extends ActiveRouter {
 	 */
 	public EpidemicRouter(Settings s) {
 		super(s);
-		System.out.println("Constructor calling settings constructor"); // M
+		// System.out.println("Constructor calling settings constructor"); 
 		//TODO: read&use epidemic router specific settings (if any)
 	}
 	
@@ -29,14 +29,14 @@ public class EpidemicRouter extends ActiveRouter {
 	 */
 	protected EpidemicRouter(EpidemicRouter r) {
 		super(r);
-		System.out.println("Constructor calling Epidemic Router constructor"); // M
+		// System.out.println("Constructor calling Epidemic Router constructor");
 		//TODO: copy epidemic settings here (if any)
 	}
 			
 	@Override
 	public void update() {
 		super.update();
-		System.out.println("Update method from EpidemicRouter class"); // M
+		// System.out.println("Update method from EpidemicRouter class");
 		if (isTransferring() || !canStartTransfer()) {
 			return; // transferring, don't try other connections yet
 		}
@@ -53,7 +53,7 @@ public class EpidemicRouter extends ActiveRouter {
 	
 	@Override
 	public EpidemicRouter replicate() {
-		System.out.println("replicate method from EpidemicRouter class"); // M
+		// System.out.println("replicate method from EpidemicRouter class");
 		return new EpidemicRouter(this);
 	}
 

@@ -133,6 +133,8 @@ public class SimScenario implements Serializable {
 	 * Creates a scenario based on Settings object.
 	 */
 	protected SimScenario() {
+		System.out.println("SimScenario : constructor");
+
 		Settings s = new Settings(SCENARIO_NS);
 		nrofGroups = s.getInt(NROF_GROUPS_S);
 
@@ -172,6 +174,8 @@ public class SimScenario implements Serializable {
 	 * Returns the SimScenario instance and creates one if it doesn't exist yet
 	 */
 	public static SimScenario getInstance() {
+		System.out.println("SimScenario : getInstance");
+
 		if (myinstance == null) {
 			myinstance = new SimScenario();
 		}

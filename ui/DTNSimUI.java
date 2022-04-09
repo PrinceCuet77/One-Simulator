@@ -73,6 +73,8 @@ public abstract class DTNSimUI {
 	 * Starts the simulation.
 	 */
 	public void start() {
+		System.out.println("DTNSimUI : start");
+
 		initModel();
 		runSim();
 	}
@@ -86,11 +88,13 @@ public abstract class DTNSimUI {
 	 * Initializes the simulator model.
 	 */
 	private void initModel() {
+		System.out.println("DTNSimUI : initModel");
+
 		Settings settings = null;
 				
 		try {
-			settings = new Settings();
-			this.scen = SimScenario.getInstance();
+			settings = new Settings(); // Settings object without namespace. Read the default_settings.txt files first key like Group5, Scenario
+			this.scen = SimScenario.getInstance(); // Get SimScenario object.
 
 			// add reports
 			for (int i=1, n = settings.getInt(NROF_REPORT_S); i<=n; i++){

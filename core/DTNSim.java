@@ -40,7 +40,8 @@ public class DTNSim {
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
-		System.out.println("DTNSim Java Class");
+		System.out.println("DTNSim : main");
+		System.out.println(args.length); // 0
 
 		boolean batchMode = false;
 		int nrofRuns[] = {0,1};
@@ -73,7 +74,7 @@ public class DTNSim {
 			confFiles = args;
 		}
 		else {
-			confFiles = new String[] {null};
+			confFiles = new String[] {null}; // Config file is null now.
 		}
 		
 		initSettings(confFiles, firstConfIndex);
@@ -89,8 +90,8 @@ public class DTNSim {
 			double duration = (System.currentTimeMillis() - startTime)/1000.0;
 			print("---\nAll done in " + String.format("%.2f", duration) + "s");
 		}
-		else {
-			Settings.setRunIndex(guiIndex);
+		else { // Enter
+			Settings.setRunIndex(guiIndex); // guiIndex = 0
 			new DTNSimGUI().start();
 		}
 	}
@@ -101,9 +102,13 @@ public class DTNSim {
 	 * @param firstIndex Index of the first config file name
 	 */
 	private static void initSettings(String[] confFiles, int firstIndex) {
-		int i = firstIndex;
+		System.out.println("DTNSim : initSettings");
+		System.out.println(confFiles.length); // 1
+		System.out.println(firstIndex); // 0
+		
+		int i = firstIndex; // 0
 
-        if (i >= confFiles.length) {
+        if (i >= confFiles.length) { 
             return;
         }
 

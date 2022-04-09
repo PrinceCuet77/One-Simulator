@@ -67,7 +67,9 @@ public class Settings {
 	 * of the all subsequent setting requests.
 	 * @param namespace Namespace to use
 	 */
-	public Settings(String namespace) {
+	public Settings(String namespace) { // Call second.
+		System.out.println("Settings : parameterized constructor");
+
 		this.oldNamespaces = new Stack<String>();
 		this.secondaryNamespaces = new Stack<String>();
 		setNameSpace(namespace);
@@ -77,8 +79,10 @@ public class Settings {
 	 * Create a setting object without namespace. All setting requests must
 	 * be prefixed with a valid namespace (e.g. "Report.nrofReports").
 	 */
-	public Settings() {
+	public Settings() { // Call first.
 		this(null);
+		
+		System.out.println("Settings : constructor");
 	}
 	
 	/**
@@ -97,7 +101,7 @@ public class Settings {
 	 * -1 to disable run indexing
 	 */
 	public static void setRunIndex(int index) {
-		runIndex = index;
+		runIndex = index; // 0
 		writtenSettings.clear();
 	}
 	
@@ -129,6 +133,10 @@ public class Settings {
 	 * @param namespace The new namespace
 	 */
 	public void setNameSpace(String namespace) {
+		System.out.println("Settings : setNameSpace");
+		System.out.println("namespace: " + namespace);
+		System.out.println();
+		
 		this.oldNamespaces.push(this.namespace);
 		this.namespace = namespace;
 	}
@@ -202,12 +210,23 @@ public class Settings {
 	 * @throws SettingsError If loading the settings file(s) didn't succeed
 	 */
 	public static void init(String propFile) throws SettingsError {
+		System.out.println("Settings : init");
+		System.out.println(propFile); // null
+
 		String outFile;
 		try {
-			if (new File(DEF_SETTINGS_FILE).exists()) {
+			if (new File(DEF_SETTINGS_FILE).exists()) { // File exists
 				Properties defProperties = new Properties();
-				defProperties.load(new FileInputStream(DEF_SETTINGS_FILE));
+				defProperties.load(new FileInputStream(DEF_SETTINGS_FILE)); // Read and load the file contents
 				props = new Properties(defProperties);
+
+				// System.out.println(props.getClass().getName()); // java.util.Properties
+				System.out.println(props); // {}
+
+				// Printing all the content of the java.util.Properties.
+				// for (Object key: props.keySet()) {
+            	// 	System.out.println(key + ": " + props.getProperty(key.toString()));
+        		// }
 			}
 			else {
 				props = new Properties();
@@ -219,7 +238,9 @@ public class Settings {
 			throw new SettingsError(e);
 		}
 
-		outFile = props.getProperty(SETTING_OUTPUT_S);
+		outFile = props.getProperty(SETTING_OUTPUT_S); // Searches for the property with the specific key in the property list.
+		System.out.println(outFile); // null
+
 		if (outFile != null) {
 			if (outFile.trim().length() == 0) {
 				out = System.out;
