@@ -38,7 +38,7 @@ public class Settings {
 	/** properties object where the setting files are read into */
 	protected static Properties props;
 	/** file name of the default settings file ({@value}) */
-	public static final String DEF_SETTINGS_FILE ="default_settings.txt";
+	public static final String DEF_SETTINGS_FILE = "default_settings.txt";
 	
 	/** 
 	 * Setting to define the file name where all read settings are written
@@ -72,7 +72,7 @@ public class Settings {
 
 		this.oldNamespaces = new Stack<String>();
 		this.secondaryNamespaces = new Stack<String>();
-		setNameSpace(namespace);
+		setNameSpace(namespace); // null
 	}
 	
 	/**
@@ -215,15 +215,21 @@ public class Settings {
 
 		String outFile;
 		try {
-			if (new File(DEF_SETTINGS_FILE).exists()) { // File exists
+			if (new File(DEF_SETTINGS_FILE).exists()) { // File exists (default settings file)
 				Properties defProperties = new Properties();
-				defProperties.load(new FileInputStream(DEF_SETTINGS_FILE)); // Read and load the file contents
-				props = new Properties(defProperties);
+				defProperties.load(new FileInputStream(DEF_SETTINGS_FILE)); // Read and load the file contents randomly.
+				
+				// All the contents are printable.
+				for (Object key: defProperties.keySet()) {
+            		System.out.println(key + ": " + defProperties.getProperty(key.toString()));
+        		}
+
+				props = new Properties(defProperties); // Creates an empty property list with the specified defaults.
 
 				// System.out.println(props.getClass().getName()); // java.util.Properties
-				System.out.println(props); // {}
+				// System.out.println(props); // {}
 
-				// Printing all the content of the java.util.Properties.
+				// Printing all the contents of the java.util.Properties.
 				// for (Object key: props.keySet()) {
             	// 	System.out.println(key + ": " + props.getProperty(key.toString()));
         		// }
@@ -231,7 +237,7 @@ public class Settings {
 			else {
 				props = new Properties();
 			}
-			if (propFile != null) {
+			if (propFile != null) { // Load and read additional settings files.
 				props.load(new FileInputStream(propFile));
 			}
 		} catch (IOException e) {
@@ -239,7 +245,7 @@ public class Settings {
 		}
 
 		outFile = props.getProperty(SETTING_OUTPUT_S); // Searches for the property with the specific key in the property list.
-		System.out.println(outFile); // null
+		// System.out.println(outFile); // null because props is null.
 
 		if (outFile != null) {
 			if (outFile.trim().length() == 0) {

@@ -103,11 +103,11 @@ public class SimScenario implements Serializable {
 	/** Update interval of sim time */
 	private double updateInterval;
 	/** External events queue */
-	private EventQueueHandler eqHandler;
+	private EventQueueHandler eqHandler; // input > EventQueueHandler.java
 	/** Should connections between hosts be simulated */
 	private boolean simulateConnections;
 	/** Map used for host movement (if any) */
-	private SimMap simMap;
+	private SimMap simMap; // movement > map > SimMap.java
 
 	/** Global connection event listeners */
 	private List<ConnectionListener> connectionListeners;
@@ -121,7 +121,7 @@ public class SimScenario implements Serializable {
 	private List<ApplicationListener> appListeners;
 
 	static {
-		DTNSim.registerForReset(SimScenario.class.getCanonicalName());
+		DTNSim.registerForReset(SimScenario.class.getCanonicalName()); // DTNSim.registerForReset(Core.SimScenario)
 		reset();
 	}
 	

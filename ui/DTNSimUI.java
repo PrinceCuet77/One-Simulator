@@ -93,12 +93,12 @@ public abstract class DTNSimUI {
 		Settings settings = null;
 				
 		try {
-			settings = new Settings(); // Settings object without namespace. Read the default_settings.txt files first key like Group5, Scenario
+			settings = new Settings(); // Settings object without namespace. Read the 'default_settings.txt' file first. Key like Group5, Scenario
 			this.scen = SimScenario.getInstance(); // Get SimScenario object.
 
 			// add reports
-			for (int i=1, n = settings.getInt(NROF_REPORT_S); i<=n; i++){
-				String reportClass = settings.getSetting(REPORT_S + i);
+			for (int i=1, n = settings.getInt(NROF_REPORT_S); i<=n; i++){ // NROF_REPORT_S = 1
+				String reportClass = settings.getSetting(REPORT_S + i); // reportClass = MessageStatsReport
 				addReport((Report)settings.createObject(REPORT_PAC + 
 						reportClass));	
 			}
@@ -107,7 +107,7 @@ public abstract class DTNSimUI {
 			if (settings.contains(MM_WARMUP_S)) {
 				warmupTime = settings.getDouble(MM_WARMUP_S);
 				if (warmupTime > 0) {
-					SimClock c = SimClock.getInstance();
+					SimClock c = SimClock.getInstance(); // Get object of SimClock.
 					c.setTime(-warmupTime);
 				}
 			}
@@ -141,7 +141,7 @@ public abstract class DTNSimUI {
 	 * @param r Report to add
 	 */
 	protected void addReport(Report r) {
-		if (r instanceof MessageListener) {
+		if (r instanceof MessageListener) { // Enter
 			scen.addMessageListener((MessageListener)r);
 		}
 		if (r instanceof ConnectionListener) {

@@ -17,7 +17,7 @@ import ui.DTNSimTextUI;
 public class DTNSim {
 	/** If this option ({@value}) is given to program, batch mode and
 	 * Text UI are used*/
-	public static final String BATCH_MODE_FLAG = "-b";
+	public static final String BATCH_MODE_FLAG = "-b"; 
 	/** Delimiter for batch mode index range values (colon) */
 	public static final String RANGE_DELIMETER = ":";
 	
@@ -63,7 +63,7 @@ public class DTNSim {
                     firstConfIndex = 2;
                 }
 			}
-			else { /* GUI mode */				
+			else { /* GUI mode */			
 				try { /* is there a run index for the GUI mode ? */
 					guiIndex = Integer.parseInt(args[0]);
 					firstConfIndex = 1;
@@ -73,11 +73,11 @@ public class DTNSim {
 			}
 			confFiles = args;
 		}
-		else {
-			confFiles = new String[] {null}; // Config file is null now.
+		else { // Enter
+			confFiles = new String[] {null}; // Config file is null in gui mode.
 		}
 		
-		initSettings(confFiles, firstConfIndex);
+		initSettings(confFiles, firstConfIndex); // Load and read additional configuration files and default configuration file as well.
 		
 		if (batchMode) {
 			long startTime = System.currentTimeMillis();
@@ -103,8 +103,8 @@ public class DTNSim {
 	 */
 	private static void initSettings(String[] confFiles, int firstIndex) {
 		System.out.println("DTNSim : initSettings");
-		System.out.println(confFiles.length); // 1
-		System.out.println(firstIndex); // 0
+		// System.out.println(confFiles.length); // 1 but null because no editional files are given.
+		// System.out.println(firstIndex); // 0
 		
 		int i = firstIndex; // 0
 
@@ -113,7 +113,7 @@ public class DTNSim {
         }
 
 		try {
-			Settings.init(confFiles[i]);
+			Settings.init(confFiles[i]); // null
 			for (i=firstIndex+1; i<confFiles.length; i++) {
 				Settings.addSettings(confFiles[i]);
 			}
@@ -150,7 +150,7 @@ public class DTNSim {
 	public static void registerForReset(String className) {
 		Class<?> c = null;
 		try {
-			c = Class.forName(className);
+			c = Class.forName(className); // className = Core.SimScenario
 			c.getMethod(RESET_METHOD_NAME);
 		} catch (ClassNotFoundException e) {
 			System.err.println("Can't register class " + className + 
@@ -163,7 +163,7 @@ public class DTNSim {
 			" for resetting; class doesn't contain resetting method");
 			System.exit(-1);
 		}
-		resetList.add(c);
+		resetList.add(c); // Store all the classes which will be reset.
 	}
 	
 	/**
