@@ -11,6 +11,7 @@ import core.Connection;
 import core.DTNHost;
 import core.Message;
 import core.Settings;
+import core.SimClock;
 
 /**
  * Implementation of Spray and wait router as depicted in 
@@ -85,27 +86,33 @@ public class SprayAndWaitRouter extends ActiveRouter {
 		return true;
 	}
 	
+        // The method where the choosing of protocol logic resides
 	@Override
 	public void update() {
-		super.update();
-		if (!canStartTransfer() || isTransferring()) {
-			return; // nothing to transfer or is currently transferring 
-		}
+                super.update();
+                if(flag) numOfRunsEpidemic++;
+                else numOfRunsSprayAndWait++;
+                
+                if (!canStartTransfer() || isTransferring()) {
+                    return; // nothing to transfer or is currently transferring 
+                }
 
-		/* try messages that could be delivered to final recipient */
-		if (exchangeDeliverableMessages() != null) {
-			return;
-		}
-		
-		/* create a list of SAWMessages that have copies left to distribute */
-		@SuppressWarnings(value = "unchecked")
-		List<Message> copiesLeft = sortByQueueMode(getMessagesWithCopiesLeft());
-		
-		if (copiesLeft.size() > 0) {
-			/* try to send those messages */
-			this.tryMessagesToConnections(copiesLeft, getConnections());
-		}
-	}
+                /* try messages that could be delivered to final recipient */
+                if (exchangeDeliverableMessages() != null) {
+                   // messageDeliveredSprayAndWait++;
+                   // System.out.println(messageDeliveredSprayAndWait+ " " + SimClock.getTime());
+                    return;
+                }
+
+                /* create a list of SAWMessages that have copies left to distribute */
+                @SuppressWarnings(value = "unchecked")
+                        List<Message> copiesLeft = sortByQueueMode(getMessagesWithCopiesLeft());
+
+                if (copiesLeft.size() > 0) {
+                    /* try to send those messages */
+                    this.tryMessagesToConnections(copiesLeft, getConnections());
+                }
+        }
 	
 	/**
 	 * Creates and returns a list of messages this router is currently
@@ -119,9 +126,15 @@ public class SprayAndWaitRouter extends ActiveRouter {
 			Integer nrofCopies = (Integer)m.getProperty(MSG_COUNT_PROPERTY);
 			assert nrofCopies != null : "SnW message " + m + " didn't have " + 
 				"nrof copies property!";
-			if (nrofCopies > 1) {
-				list.add(m);
-			}
+			
+                        if(!flag  && nrofCopies > 1){
+                            // For S & W, add only if number of copies is more than one
+                            list.add(m);
+                        }
+                        else if(flag && nrofCopies >= 1){
+                            // For Epidemic, add if there is still a copy of the message
+                            list.add(m);
+                        }
 		}
 		
 		return list;
@@ -147,12 +160,16 @@ public class SprayAndWaitRouter extends ActiveRouter {
 		
 		/* reduce the amount of copies left */
 		nrofCopies = (Integer)msg.getProperty(MSG_COUNT_PROPERTY);
-		if (isBinary) { 
-			nrofCopies /= 2;
-		}
-		else {
-			nrofCopies--;
-		}
+		if(!flag){
+                    // For S & W decrease the value of nrofCopies, 
+                    // For Epidemic skip this part
+                    if (isBinary) { 
+                            nrofCopies /= 2;
+                    }
+                    else {
+                            nrofCopies--;
+                    }
+                }
 		msg.updateProperty(MSG_COUNT_PROPERTY, nrofCopies);
 	}
 	

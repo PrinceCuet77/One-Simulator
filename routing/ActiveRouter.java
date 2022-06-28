@@ -40,8 +40,35 @@ public abstract class ActiveRouter extends MessageRouter {
 	protected ArrayList<Connection> sendingConnections;
 	/** sim time when the last TTL check was done */
 	private double lastTtlCheck;
-	
+        
+        // False --> first half
+        // True --> second half
+        public boolean timeDeterminer = false;
+        public boolean epi = false, spray = false;
+        
+        public int numOfMessageDeliveredSprayAndWait;
+        public int numOfMessageDeliveredEpidemic;
+        
+        // Flag to determine between S&W and Epidemic
+        // False --> Epidemic
+        // True --> Spray And Wait
+        public boolean flag;
+        
+        // Number of message Transmitted
+        public int numOfMessageTransmittedEpidemic;
+        public int numOfMessageTransmittedSprayAndWait;
+        
+        // Number of message delivered / acknowledgement received
+        public int messageDeliveredEpidemic;
+        public int messageDeliveredSprayAndWait;
 
+        // Number of times this action is taken
+        public int numOfRunsEpidemic;
+        public int numOfRunsSprayAndWait;
+        
+        // Delivery Ratio
+        public double deliveryRatioEpidemic;
+        public double deliveryRatioSprayAndWait;
 	/**
 	 * Constructor. Creates a new message router based on the settings in
 	 * the given Settings object.
@@ -165,6 +192,16 @@ public abstract class ActiveRouter extends MessageRouter {
 		
 		retVal = con.startTransfer(getHost(), m);
 		if (retVal == RCV_OK) { // started transfer
+            // Message transmission
+            if(flag) numOfMessageTransmittedEpidemic++;
+            else numOfMessageTransmittedSprayAndWait++;
+            
+            if(m.getTo() == con.getOtherNode(this.getHost())){
+                if(flag) numOfMessageDeliveredEpidemic++;
+                else numOfMessageDeliveredSprayAndWait++;
+                // Message is delivered to the destination
+            }
+            
 			addToSendingConnections(con);
 		}
 		else if (deleteDelivered && retVal == DENIED_OLD && 
@@ -448,7 +485,12 @@ public abstract class ActiveRouter extends MessageRouter {
 			tryMessagesForConnected(sortByQueueMode(getMessagesForConnected()));
 
 		if (t != null) {
-			return t.getValue(); // started transfer
+                        // Add messagetransmitted
+                        //System.out.println("GET VALUE " + t.getValue());
+                        if(flag) numOfMessageTransmittedEpidemic++;
+                        else numOfMessageTransmittedSprayAndWait++;
+                        
+                        return t.getValue(); // started transfer
 		}
 		
 		// didn't start transfer to any node -> ask messages from connected

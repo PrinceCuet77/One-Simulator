@@ -133,15 +133,15 @@ public class SimScenario implements Serializable {
 	 * Creates a scenario based on Settings object.
 	 */
 	protected SimScenario() {
-		System.out.println("SimScenario : constructor");
+		// System.out.println("SimScenario : constructor");
 
 		Settings s = new Settings(SCENARIO_NS);
-		nrofGroups = s.getInt(NROF_GROUPS_S);
+		nrofGroups = s.getInt(NROF_GROUPS_S); // 6 
 
-		this.name = s.valueFillString(s.getSetting(NAME_S));
-		this.endTime = s.getDouble(END_TIME_S);
-		this.updateInterval = s.getDouble(UP_INT_S);
-		this.simulateConnections = s.getBoolean(SIM_CON_S);
+		this.name = s.valueFillString(s.getSetting(NAME_S)); // default_scenario
+		this.endTime = s.getDouble(END_TIME_S); // 43200.0
+		this.updateInterval = s.getDouble(UP_INT_S); // 0.1
+		this.simulateConnections = s.getBoolean(SIM_CON_S); // true
 
 		ensurePositiveValue(nrofGroups, NROF_GROUPS_S);
 		ensurePositiveValue(endTime, END_TIME_S);
@@ -162,6 +162,7 @@ public class SimScenario implements Serializable {
 		int [] worldSize = s.getCsvInts(MovementModel.WORLD_SIZE, 2);
 		this.worldSizeX = worldSize[0];
 		this.worldSizeY = worldSize[1];
+		// System.out.println(this.worldSizeX + " === " + this.worldSizeY);
 		
 		createHosts();
 		
@@ -174,7 +175,7 @@ public class SimScenario implements Serializable {
 	 * Returns the SimScenario instance and creates one if it doesn't exist yet
 	 */
 	public static SimScenario getInstance() {
-		System.out.println("SimScenario : getInstance");
+		// System.out.println("SimScenario : getInstance");
 
 		if (myinstance == null) {
 			myinstance = new SimScenario();
@@ -345,6 +346,9 @@ public class SimScenario implements Serializable {
 			MovementModel mmProto = 
 				(MovementModel)s.createIntializedObject(MM_PACKAGE + 
 						s.getSetting(MOVEMENT_MODEL_S));
+			// System.out.println("___ ENTER ___");
+			// System.out.println(ROUTING_PACKAGE);
+			// System.out.println(ROUTER_S);
 			MessageRouter mRouterProto = 
 				(MessageRouter)s.createIntializedObject(ROUTING_PACKAGE + 
 						s.getSetting(ROUTER_S));

@@ -40,8 +40,8 @@ public class DTNSim {
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
-		System.out.println("DTNSim : main");
-		System.out.println(args.length); // 0
+		// System.out.println("DTNSim : main");
+		// System.out.println(args.length); // 0
 
 		boolean batchMode = false;
 		int nrofRuns[] = {0,1};
@@ -102,7 +102,7 @@ public class DTNSim {
 	 * @param firstIndex Index of the first config file name
 	 */
 	private static void initSettings(String[] confFiles, int firstIndex) {
-		System.out.println("DTNSim : initSettings");
+		// System.out.println("DTNSim : initSettings");
 		// System.out.println(confFiles.length); // 1 but null because no editional files are given.
 		// System.out.println(firstIndex); // 0
 		

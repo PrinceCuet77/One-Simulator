@@ -91,6 +91,7 @@ public abstract class MessageRouter {
 	 * @param s The settings object
 	 */
 	public MessageRouter(Settings s) {
+//        System.out.println("Message Router");
 		this.bufferSize = Integer.MAX_VALUE; // defaults to rather large buffer	
 		this.msgTtl = Message.INFINITE_TTL;
 		this.applications = new HashMap<String, Collection<Application>>();
@@ -112,6 +113,9 @@ public abstract class MessageRouter {
 			sendQueueMode = Q_MODE_RANDOM;
 		}
 		
+        System.out.println(bufferSize); // 5000000 for 3 times and 50000000 for 3 times
+//        System.out.println(msgTtl); // 300 minutes
+//        System.out.println(sendQueueMode); // 1
 	}
 	
 	/**

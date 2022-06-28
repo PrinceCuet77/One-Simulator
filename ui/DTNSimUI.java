@@ -73,7 +73,7 @@ public abstract class DTNSimUI {
 	 * Starts the simulation.
 	 */
 	public void start() {
-		System.out.println("DTNSimUI : start");
+		// System.out.println("DTNSimUI : start");
 
 		initModel();
 		runSim();
@@ -88,7 +88,7 @@ public abstract class DTNSimUI {
 	 * Initializes the simulator model.
 	 */
 	private void initModel() {
-		System.out.println("DTNSimUI : initModel");
+		// System.out.println("DTNSimUI : initModel");
 
 		Settings settings = null;
 				

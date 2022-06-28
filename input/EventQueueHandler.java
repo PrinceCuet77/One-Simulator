@@ -62,7 +62,6 @@ public class EventQueueHandler  {
 
 		for (int i=1; i <= nrof; i++) {
 			Settings s = new Settings(SETTINGS_NAMESPACE + i);
-
 			if (s.contains(PATH_SETTING)) { // external events file
 				int preload = 0;
 				String path = "";
@@ -75,9 +74,9 @@ public class EventQueueHandler  {
 			}
 			else if (s.contains(CLASS_SETTING)) { // event generator class
 				String className = CLASS_PACKAGE + "." + 
-					s.getSetting(CLASS_SETTING);
-				EventQueue eq = (EventQueue)s.createIntializedObject(className);
-				
+					s.getSetting(CLASS_SETTING); // input.MessageEventGenerator 
+				EventQueue eq = (EventQueue)s.createIntializedObject(className); // Load Events1.size and so on
+
 				queues.add(eq);
 			}
 		}

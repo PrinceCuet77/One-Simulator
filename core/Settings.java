@@ -67,22 +67,20 @@ public class Settings {
 	 * of the all subsequent setting requests.
 	 * @param namespace Namespace to use
 	 */
-	public Settings(String namespace) { // Call second.
-		System.out.println("Settings : parameterized constructor");
-
+	public Settings(String namespace) {
 		this.oldNamespaces = new Stack<String>();
 		this.secondaryNamespaces = new Stack<String>();
-		setNameSpace(namespace); // null
+		setNameSpace(namespace); 
 	}
 	
 	/**
 	 * Create a setting object without namespace. All setting requests must
 	 * be prefixed with a valid namespace (e.g. "Report.nrofReports").
 	 */
-	public Settings() { // Call first.
+	public Settings() {
 		this(null);
 		
-		System.out.println("Settings : constructor");
+		// System.out.println("Settings : constructor");
 	}
 	
 	/**
@@ -133,9 +131,9 @@ public class Settings {
 	 * @param namespace The new namespace
 	 */
 	public void setNameSpace(String namespace) {
-		System.out.println("Settings : setNameSpace");
-		System.out.println("namespace: " + namespace);
-		System.out.println();
+		// System.out.println("Settings : setNameSpace");
+		// System.out.println("namespace: " + namespace);
+		// System.out.println();
 		
 		this.oldNamespaces.push(this.namespace);
 		this.namespace = namespace;
@@ -210,8 +208,8 @@ public class Settings {
 	 * @throws SettingsError If loading the settings file(s) didn't succeed
 	 */
 	public static void init(String propFile) throws SettingsError {
-		System.out.println("Settings : init");
-		System.out.println(propFile); // null
+		// System.out.println("Settings : init");
+		// System.out.println(propFile); // null
 
 		String outFile;
 		try {
@@ -220,9 +218,9 @@ public class Settings {
 				defProperties.load(new FileInputStream(DEF_SETTINGS_FILE)); // Read and load the file contents randomly.
 				
 				// All the contents are printable.
-				for (Object key: defProperties.keySet()) {
-            		System.out.println(key + ": " + defProperties.getProperty(key.toString()));
-        		}
+				// for (Object key: defProperties.keySet()) {
+            	// 	System.out.println(key + ": " + defProperties.getProperty(key.toString()));
+        		// }
 
 				props = new Properties(defProperties); // Creates an empty property list with the specified defaults.
 
@@ -319,6 +317,7 @@ public class Settings {
 	 */
 	private String getFullPropertyName(String name, boolean secondary) {
 		String usedNamespace = (secondary ? secondaryNamespace : namespace);
+		// System.out.println("used Namespace: ------------" + usedNamespace + " >>> " + name);
 		
 		if (usedNamespace != null) {
 			return usedNamespace + "." + name;
@@ -339,12 +338,13 @@ public class Settings {
 	 * the namespaces
 	 */
 	public String getSetting(String name) {
+		// System.out.println("When, name: <<<<< " + name);
 		String fullPropName;
 		if (props == null) {
 			init(null);
 		}
-		fullPropName = getFullPropertyName(name, false);
-		String value = props.getProperty(fullPropName);
+		fullPropName = getFullPropertyName(name, false); // Scenario.name
+		String value = props.getProperty(fullPropName); // default_scenario
 		
 		if (value != null) { // found value, check if run setting can be parsed
 			value = parseRunSetting(value.trim());
@@ -546,6 +546,7 @@ public class Settings {
 	 * @see #getCsvSetting(String, int)
 	 */
 	public int[] getCsvInts(String name, int expectedCount) {
+		// System.out.println("Name: >>>" + name);
 		return convertToInts(getCsvDoubles(name, expectedCount), name);
 	}
 	
@@ -647,6 +648,7 @@ public class Settings {
 	public Object createIntializedObject(String className) {
 		Class<?>[] argsClass = {Settings.class};
 		Object[] args = {this};
+		// System.out.println("1.1");
 
 		return loadObject(className, argsClass, args);
 	}
@@ -723,6 +725,7 @@ public class Settings {
 	 * @throws SettingsError if such class wasn't found or couldn't be loaded 
 	 */
 	private Class<?> getClass(String name) {
+		// System.out.println("Name: " + name);
 		String className = name;
 		Class<?> c;
 		
