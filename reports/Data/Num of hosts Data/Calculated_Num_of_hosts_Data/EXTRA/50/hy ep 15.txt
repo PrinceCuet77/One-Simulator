@@ -1,0 +1,21 @@
+Message stats for scenario default_scenario
+sim_time: 54000.1000
+created: 1828
+started: 40989
+relayed: 17354
+aborted: 23634
+dropped: 14917
+removed: 0
+delivered: 1467
+delivery_prob: 0.8025
+response_prob: 0.0000
+overhead_ratio: 10.8296
+latency_avg: 4679.2282
+latency_med: 3859.7000
+hopcount_avg: 1.9557
+hopcount_med: 2
+buffertime_avg: 8479.7557
+buffertime_med: 7745.1000
+rtt_avg: NaN
+rtt_med: NaN
+pm: 0.0289

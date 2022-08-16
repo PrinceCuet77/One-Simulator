@@ -90,8 +90,6 @@ public class SprayAndWaitRouter extends ActiveRouter {
 	@Override
 	public void update() {
                 super.update();
-                if(flag) numOfRunsEpidemic++;
-                else numOfRunsSprayAndWait++;
                 
                 if (!canStartTransfer() || isTransferring()) {
                     return; // nothing to transfer or is currently transferring 
@@ -160,6 +158,7 @@ public class SprayAndWaitRouter extends ActiveRouter {
 		
 		/* reduce the amount of copies left */
 		nrofCopies = (Integer)msg.getProperty(MSG_COUNT_PROPERTY);
+        
 		if(!flag){
                     // For S & W decrease the value of nrofCopies, 
                     // For Epidemic skip this part

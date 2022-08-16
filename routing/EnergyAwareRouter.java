@@ -86,7 +86,7 @@ public class EnergyAwareRouter extends ActiveRouter
 		}
 		else {
 			if (rng == null) {
-				rng = new Random((int)(range[0] + range[1]));
+				rng = new Random((long)(range[0] + range[1]));
 			}
 			this.currentEnergy = range[0] + 
 				rng.nextDouble() * (range[1] - range[0]);

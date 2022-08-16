@@ -27,7 +27,9 @@ import core.Tuple;
  * Superclass for message routers.
  */
 public abstract class MessageRouter {
-	/** Message buffer size -setting id ({@value}). Integer value in bytes.*/
+	
+        
+        /** Message buffer size -setting id ({@value}). Integer value in bytes.*/
 	public static final String B_SIZE_S = "bufferSize";
 	/**
 	 * Message TTL -setting id ({@value}). Value is in minutes and must be
@@ -91,7 +93,6 @@ public abstract class MessageRouter {
 	 * @param s The settings object
 	 */
 	public MessageRouter(Settings s) {
-//        System.out.println("Message Router");
 		this.bufferSize = Integer.MAX_VALUE; // defaults to rather large buffer	
 		this.msgTtl = Message.INFINITE_TTL;
 		this.applications = new HashMap<String, Collection<Application>>();
@@ -113,9 +114,6 @@ public abstract class MessageRouter {
 			sendQueueMode = Q_MODE_RANDOM;
 		}
 		
-        System.out.println(bufferSize); // 5000000 for 3 times and 50000000 for 3 times
-//        System.out.println(msgTtl); // 300 minutes
-//        System.out.println(sendQueueMode); // 1
 	}
 	
 	/**
@@ -286,7 +284,8 @@ public abstract class MessageRouter {
 	 * @param m Message to put in the receiving buffer
 	 * @param from Who the message is from
 	 * @return Value zero if the node accepted the message (RCV_OK), value less
-	 * than zero if node rejected the message (e.g. DENIED_OLD), value bigger
+	 * than zero if node rejected the message (e.g. DEN
+         * IED_OLD), value bigger
 	 * than zero if the other node should try later (e.g. TRY_LATER_BUSY).
 	 */
 	public int receiveMessage(Message m, DTNHost from) {
@@ -464,6 +463,7 @@ public abstract class MessageRouter {
 		}
 	}
 	
+       
 	/**
 	 * Sorts/shuffles the given list according to the current sending queue 
 	 * mode. The list can contain either Message or Tuple<Message, Connection> 

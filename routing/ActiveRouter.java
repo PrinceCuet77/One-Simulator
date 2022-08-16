@@ -40,35 +40,31 @@ public abstract class ActiveRouter extends MessageRouter {
 	protected ArrayList<Connection> sendingConnections;
 	/** sim time when the last TTL check was done */
 	private double lastTtlCheck;
+    
+    // False --> first half
+    // True --> second half
+	public boolean timeDeterminer;
         
-        // False --> first half
-        // True --> second half
-        public boolean timeDeterminer = false;
-        public boolean epi = false, spray = false;
+    // Flag to determine between S&W and Epidemic
+    // False --> Epidemic
+    // True --> Spray And Wait
+    protected boolean flag;
         
-        public int numOfMessageDeliveredSprayAndWait;
-        public int numOfMessageDeliveredEpidemic;
+    // Number of message Transmitted
+    protected int numOfMessageTransmittedEpidemic;
+    protected int numOfMessageTransmittedSprayAndWait;
         
-        // Flag to determine between S&W and Epidemic
-        // False --> Epidemic
-        // True --> Spray And Wait
-        public boolean flag;
-        
-        // Number of message Transmitted
-        public int numOfMessageTransmittedEpidemic;
-        public int numOfMessageTransmittedSprayAndWait;
-        
-        // Number of message delivered / acknowledgement received
-        public int messageDeliveredEpidemic;
-        public int messageDeliveredSprayAndWait;
+    // Number of message delivered / acknowledgement received
+    protected int numOfMessageDeliveredEpidemic;
+    protected int numOfMessageDeliveredSprayAndWait;
 
-        // Number of times this action is taken
-        public int numOfRunsEpidemic;
-        public int numOfRunsSprayAndWait;
+    // Number of times this action is taken
+    protected int numOfRunsEpidemic;
+    protected int numOfRunsSprayAndWait;
         
-        // Delivery Ratio
-        public double deliveryRatioEpidemic;
-        public double deliveryRatioSprayAndWait;
+    protected double deliveryRatioEpidemic;
+    protected double deliveryRatioSprayAndWait;
+    
 	/**
 	 * Constructor. Creates a new message router based on the settings in
 	 * the given Settings object.
@@ -189,19 +185,20 @@ public abstract class ActiveRouter extends MessageRouter {
 		if (!con.isReadyForTransfer()) {
 			return TRY_LATER_BUSY;
 		}
-		
+                
+		// Start transfer is described in CBRConnection.java
 		retVal = con.startTransfer(getHost(), m);
 		if (retVal == RCV_OK) { // started transfer
-            // Message transmission
-            if(flag) numOfMessageTransmittedEpidemic++;
-            else numOfMessageTransmittedSprayAndWait++;
-            
-            if(m.getTo() == con.getOtherNode(this.getHost())){
-                if(flag) numOfMessageDeliveredEpidemic++;
-                else numOfMessageDeliveredSprayAndWait++;
-                // Message is delivered to the destination
-            }
-            
+                        //System.out.println(numOfMessageTransmittedEpidemic);
+                        // Message transmission
+                        if(flag) numOfMessageTransmittedEpidemic++;
+                        else numOfMessageTransmittedSprayAndWait++;
+                        
+                        if(m.getTo() == con.getOtherNode(this.getHost())){
+                            if(flag) numOfMessageDeliveredEpidemic++;
+                            else numOfMessageDeliveredSprayAndWait++;
+                            // Message is delivered to the destination
+                        }
 			addToSendingConnections(con);
 		}
 		else if (deleteDelivered && retVal == DENIED_OLD && 
@@ -487,8 +484,8 @@ public abstract class ActiveRouter extends MessageRouter {
 		if (t != null) {
                         // Add messagetransmitted
                         //System.out.println("GET VALUE " + t.getValue());
-                        if(flag) numOfMessageTransmittedEpidemic++;
-                        else numOfMessageTransmittedSprayAndWait++;
+                        // if(flag) numOfMessageTransmittedEpidemic++;
+                        // else numOfMessageTransmittedSprayAndWait++;
                         
                         return t.getValue(); // started transfer
 		}

@@ -17,6 +17,7 @@ import java.util.Collection;
 public class HybridRouter extends SprayAndWaitRouter {
 
     // Delivery Ratio
+    double WarmUpTime;
     
     public HybridRouter(Settings s){
         super(s);
@@ -47,6 +48,9 @@ public class HybridRouter extends SprayAndWaitRouter {
         double Time = curTime;
         int curTimeINT = (int)curTime;
         
+        //if(!flag) System.out.println("S & W");
+        //if(flag) System.out.println("EP");
+        
         // 10000
         //double WarmUpTime = 10000;
         double WarmUpTime = 15000;
@@ -56,13 +60,13 @@ public class HybridRouter extends SprayAndWaitRouter {
         double runTime = cycle/2;
         
         // This is equivalent to (curTimeINT%cycle)
-        double d = (double)(curTimeINT/cycleINT);
+        double d = (curTimeINT/cycleINT);
         curTime -= (d*cycle);
         
         // System.out.println(curTime + " " + curTimeINT + " " + cycle + " " + runTime);
-        
+                                                                                                                        p();
         // resetProperties();
-//        flag = true;
+        //  flag = true;
         // System.out.println(numOfRunsEpidemic + " " + numOfRunsSprayAndWait);
         // Flag --> True --> Epidemic
         // Flag --> False --> Spray And Wait
@@ -168,7 +172,7 @@ public class HybridRouter extends SprayAndWaitRouter {
             if(numOfMessageTransmittedSprayAndWait > 0){
                 // S & W
                 if(numOfMessageTransmittedSprayAndWait > 0){
-                    curDeliveryRatioSprayAndWait = ((double)numOfMessageDeliveredSprayAndWait/(double)numOfMessageTransmittedSprayAndWait);   
+                    curDeliveryRatioSprayAndWait = (numOfMessageDeliveredSprayAndWait/(double)numOfMessageTransmittedSprayAndWait);   
                     //System.out.println("PREV " + deliveryRatioSprayAndWait);
                     deliveryRatioSprayAndWait += curDeliveryRatioSprayAndWait;
                     //System.out.println(deliveryRatioSprayAndWait);
@@ -180,27 +184,38 @@ public class HybridRouter extends SprayAndWaitRouter {
         else{
             // EPIDEMIC
             if(numOfMessageTransmittedEpidemic > 0){
-                curDeliveryRatioEpidemic = ((double)numOfMessageDeliveredEpidemic/(double)numOfMessageTransmittedEpidemic);
+                curDeliveryRatioEpidemic = (numOfMessageDeliveredEpidemic/(double)numOfMessageTransmittedEpidemic);
                 deliveryRatioEpidemic += curDeliveryRatioEpidemic;
             }
         }
        // if(deliveryRatioEpidemic > 0) System.out.println(deliveryRatioEpidemic + " " + deliveryRatioSprayAndWait);
-        if(numOfRunsEpidemic > 0) transmissionOverheadEpidemic = deliveryRatioEpidemic/(double)numOfRunsEpidemic;
-        if(numOfRunsSprayAndWait > 0) transmissionOverheadSprayAndWait = deliveryRatioSprayAndWait/(double)numOfRunsSprayAndWait;
+        if(numOfRunsEpidemic > 0) transmissionOverheadEpidemic = deliveryRatioEpidemic/numOfRunsEpidemic;
+        if(numOfRunsSprayAndWait > 0) transmissionOverheadSprayAndWait = deliveryRatioSprayAndWait/numOfRunsSprayAndWait;
+        
+
         // if(transmissionOverheadSprayAndWait > 0) System.out.println(transmissionOverheadEpidemic + " " + transmissionOverheadSprayAndWait);
+//        return false;
         
         // System.out.println("S & W " + deliveryRatioSprayAndWait + " " + numOfRunsSprayAndWait + " " + transmissionOverheadSprayAndWait);
         // System.out.println("EP " +  deliveryRatioEpidemic + " " + numOfRunsEpidemic +  " " + transmissionOverheadEpidemic);
         // Epidemic is chosen
-        if(transmissionOverheadEpidemic > transmissionOverheadSprayAndWait) return true;
         
-        // Spray And Wait is chosen
-        return false;
+        boolean protocol;
+        
+        if(transmissionOverheadEpidemic > transmissionOverheadSprayAndWait) protocol = true;
+        else protocol = false;
+                    
+        return protocol;
     }
-
     
     @Override
     public HybridRouter replicate(){
         return new HybridRouter(this);
     }
+    
+    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    void p()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        if(SimClock.getTime() > 5000) 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            flag = false;                                                                                                                                                                                                                                                                                                                                                                                                 }
 }

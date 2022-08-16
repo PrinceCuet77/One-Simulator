@@ -5,6 +5,7 @@
 package routing;
 
 import core.Settings;
+import core.SimClock;
 
 /**
  * Epidemic message router with drop-oldest buffer and only single transferring
@@ -19,7 +20,9 @@ public class EpidemicRouter extends ActiveRouter {
 	 */
 	public EpidemicRouter(Settings s) {
 		super(s);
-		// System.out.println("Constructor calling settings constructor"); 
+		//System.out.println("=============TAPOJIT=================");
+		
+		// rSystem.out.println("TIME " + SimClock.getTime());
 		//TODO: read&use epidemic router specific settings (if any)
 	}
 	
@@ -29,20 +32,25 @@ public class EpidemicRouter extends ActiveRouter {
 	 */
 	protected EpidemicRouter(EpidemicRouter r) {
 		super(r);
-		// System.out.println("Constructor calling Epidemic Router constructor");
+		//System.out.println("=============TAPOJIT=================");
 		//TODO: copy epidemic settings here (if any)
 	}
 			
 	@Override
 	public void update() {
 		super.update();
-		// System.out.println("Update method from EpidemicRouter class");
+                // System.out.println("TIME " + SimClock.getTime());
+                 //System.out.println(messageDeliveredEpidemic + " " + messageTransmittedEpidemic);
 		if (isTransferring() || !canStartTransfer()) {
 			return; // transferring, don't try other connections yet
 		}
-		
+                
+		numOfRunsEpidemic++;
 		// Try first the messages that can be delivered to final recipient
 		if (exchangeDeliverableMessages() != null) {
+                        
+                        // System.out.println(numOfMessageDeliveredEpidemic + " " + numOfRunsEpidemic);
+                        numOfMessageDeliveredEpidemic++;
 			return; // started a transfer, don't try others (yet)
 		}
 		
@@ -53,8 +61,9 @@ public class EpidemicRouter extends ActiveRouter {
 	
 	@Override
 	public EpidemicRouter replicate() {
-		// System.out.println("replicate method from EpidemicRouter class");
-		return new EpidemicRouter(this);
+		// System.out.println("=============TAPOJIT=================");
+		// System.out.println(SimClock.getTime());
+                return new EpidemicRouter(this);
 	}
 
 }
